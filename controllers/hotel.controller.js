@@ -29,3 +29,29 @@ exports.addHotel = async (req,res) => {
 };
 
 /** add hotels api ends here */
+
+/** Fetch all data from database code starts here */
+exports.allHotels = async (req, res) => {
+    try {
+        let hotelQuery = {}
+        const hotels = await Hotel.find(hotelQuery);
+        if (hotels.length === 0) {
+            res.status(200).send({
+                restaurants: [],
+                message: "Restaurants Fetched Successfully."
+            });
+        } else {
+            res.status(200).send({
+                restaurants : hotels,
+                message: "Restaurants fetched successfully."
+            });
+        }
+    } catch(err) {
+        console.log(`error fetching all hotels ${err}`);
+        res.status(500).send({
+            message : "Some error occured while fetching the Restaurants."
+        })
+    }
+};
+
+/** Fetch all data from database code end here */
