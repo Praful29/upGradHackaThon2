@@ -55,3 +55,19 @@ exports.allHotels = async (req, res) => {
 };
 
 /** Fetch all data from database code end here */
+
+/** Fetch data by category code starts here */
+exports.getAllCategories = async (req, res) => {
+    try {
+        const categories = await Hotel.distinct('category');
+        res.status(200).send(categories);
+    } catch (err) {
+        console.log(`Error fetching categories: ${err}`);
+        res.status(500).send({
+            message: 'Some error occurred while fetching the categories.',
+        });
+    }
+};
+/** Fetch data by category code ends here */
+
+
