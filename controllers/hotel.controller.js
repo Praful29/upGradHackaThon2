@@ -71,3 +71,79 @@ exports.getAllCategories = async (req, res) => {
 /** Fetch data by category code ends here */
 
 
+/** fetch data by query param category/takeout code start here */
+exports.getHotelsByCategory = async (req, res) => {
+    const { categoryName } = req.params;
+
+    try {
+        const hotels = await Hotel.find({category : categoryName});
+        if (hotels.length === 0) {
+           return res.status(200).send(`hotel with categoryName ${category} is not found`);
+        } else {
+            res.status(200).send(
+                hotels,
+                //message: "Restaurants fetched successfully."
+        );
+        }
+    } catch (err) {
+        console.log(`error fetching all hotels ${err}`);
+        res.status(500).send({
+            message: "Some error occured while fetching the Restaurants."
+        })
+    }
+};
+
+/** fetch data by query param category/takeout code ends here */
+
+
+/** fetch hotels by ID code starts here */
+exports.getHotelsById = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const hotels = await Hotel.find({_id : id});
+        if (hotels.length === 0) {
+           return res.status(404).send({message : `No Restaurants found with the give ID`});
+        } else {
+            res.status(200).send(
+                hotels,
+                //message: "Restaurants fetched successfully."
+        );
+        }
+    } catch (err) {
+        console.log(`error fetching all hotels ${err}`);
+        res.status(500).send({
+            message: "Some error occured while fetching the Restaurants."
+        })
+    }
+};
+/** fetch hotels by ID code ends here */
+
+
+
+/** fetch hotels by Rating Value code starts here */
+exports.getHotelsByRating = async (req, res) => {
+    const { ratingValue } = req.params;
+
+    try {
+        const hotels = await Hotel.find({rating : ratingValue});
+        if (hotels.length === 0) {
+           return res.status(200).send();
+        } else {
+            res.status(200).send(
+                hotels,
+                //message: "Restaurants fetched successfully."
+        );
+        }
+    } catch (err) {
+        console.log(`error fetching all hotels ${err}`);
+        res.status(500).send({
+            message: "Some error occured while fetching the Restaurants."
+        })
+    }
+};
+
+/** fetch hotels by Rating Value code ends here */
+
+
+
