@@ -145,5 +145,78 @@ exports.getHotelsByRating = async (req, res) => {
 
 /** fetch hotels by Rating Value code ends here */
 
+/** update by ID code starts here */
+exports.updateHotel = async (req, res) => {
+    const { id } = req.params;
+    const { name, description, location, category, imageURL, phone, rating } = req.body;
+
+    if (!name || !description || !location || !category || !imageURL || !phone || !rating) {
+        return res.status(400).send({ message: "Restaurant Data is Required." });
+    }
+    try {
+        const updateHotel = await Hotel.findByIdAndUpdate(id, req.body, {
+            new: true,
+        });
+        if (!updateHotel) {
+            return res.status(404).send({ message: "No Restaurant found for given ID." });
+        }
+        res.status(200).send({
+            //updateHotel,
+            message: "Restaurant updated successfully",
+        });
+    } catch (err) {
+        console.log(`error updating Hotel ${err}`);
+        res.status(500).send({ message: "Some error occured while updating the Restaurant." });
+    }
+};
+
+/** update by ID code ends here */
+
+/** Delete Hotel By ID Code Starts Here */
+
+exports.deleteHotel = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deletedHotel = await Hotel.findByIdAndDelete(id);
+        if (!deletedHotel) {
+            
+            return res.status(200).send({ 
+                restaurant: deletedHotel, 
+                message: "Restaurant Deleted Successfully." });
+        }
+        res.status(200).send({
+            restaurant: deletedHotel,
+            message: "Restaurant deleted successfully",
+        });
+    } catch (err) {
+        console.log(`error deleting Hotel ${err}`);
+        res.status(500).send({ message: "Some error occurred while deleting the Restaurant." });
+    }
+};
+/** Delete Hotel By ID Code Ends Here */
+
+
+/** Delete All Hotels Code Starts Here */
+
+exports.deleteAllHotel = async (req, res) => {
+    try {
+      const deleteResult = await Hotel.deleteMany();
+      const { deletedCount } = deleteResult;
+  
+      res.status(200).json({
+        restaurants: { acknowledged: true, deletedCount },
+        message: "Restaurants deleted successfully.",
+      });
+    } catch (error) {
+      console.log(`Error deleting restaurants: ${error}`);
+      res.status(500).json({
+        message: "Some error occurred while deleting the Restaurant.",
+      });
+    }
+  };
+
+/** Delete All Hotels Code Starts Here */
+
+
 
 
